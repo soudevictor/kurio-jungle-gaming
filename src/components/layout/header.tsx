@@ -10,7 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/features/auth/auth-context";
 import { useCart } from "@/features/cart/use-cart";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 import {
   Heart,
   Home,
@@ -47,6 +48,8 @@ export function Header() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [desktopSearchOpen, setDesktopSearchOpen] = useState(false);
+  const routerState = useRouterState();
+  const pathname = routerState.location.pathname;
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -64,35 +67,37 @@ export function Header() {
   return (
     <header className="z-40 bg-ink lg:sticky lg:top-0 lg:bg-ink/95 lg:backdrop-blur">
       {/* ── Mobile search bar (top row) — matches Figma "Search Bar" layer ── */}
-      <div className="px-6 pb-3 pt-10 lg:hidden">
-        <form onSubmit={handleSearchSubmit} className="flex gap-2">
-          <label htmlFor="mobile-search" className="sr-only">
-            Buscar NFTs
-          </label>
-          <div className="bg-surface-card rounded-[10px] relative flex-1">
-            <Search
-              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
-              aria-hidden
-            />
-            <Input
-              id="mobile-search"
-              type="search"
-              placeholder="Explorar coleções"
-              className="h-11 rounded-xl border-0 bg-surface-card pl-10 text-sm font-medium placeholder:text-text-secondary"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <Button
-            type="button"
-            size="icon"
-            className="size-11 shrink-0 rounded-xl bg-primary text-ink hover:bg-primary/90"
-            aria-label="Abrir filtros"
-          >
-            <SlidersHorizontal className="size-5" />
-          </Button>
-        </form>
-      </div>
+      {pathname === "/" && (
+        <div className="px-6 pb-3 pt-10 lg:hidden">
+          <form onSubmit={handleSearchSubmit} className="flex gap-2">
+            <label htmlFor="mobile-search" className="sr-only">
+              Buscar NFTs
+            </label>
+            <div className="bg-surface-card rounded-[10px] relative flex-1">
+              <Search
+                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
+                aria-hidden
+              />
+              <Input
+                id="mobile-search"
+                type="search"
+                placeholder="Explorar coleções"
+                className="h-11 rounded-xl border-0 bg-surface-card pl-10 text-sm font-medium placeholder:text-text-secondary"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <Button
+              type="button"
+              size="icon"
+              className="size-11 shrink-0 rounded-xl bg-primary text-ink hover:bg-primary/90"
+              aria-label="Abrir filtros"
+            >
+              <SlidersHorizontal className="size-5" />
+            </Button>
+          </form>
+        </div>
+      )}
 
       {/* ── Main header row ─────────────────────────────────────────────────── */}
       <div className="container-kurio hidden h-14 items-center gap-6 lg:flex border-b border-primary/20">
@@ -110,16 +115,21 @@ export function Header() {
           className="hidden flex-1 items-center justify-center gap-8 text-sm font-medium lg:flex"
           aria-label="Navegação principal"
         >
-          {NAV_ITEMS.map((item) =>
-            item.to ? (
+          {NAV_ITEMS.map((item) => {
+            const isActive =
+              (item.to === "/" && pathname === "/") ||
+              (item.label === "Mercado" && pathname.startsWith("/nfts"));
+
+            return item.to ? (
               <Link
                 key={item.label}
                 to={item.to}
-                className="relative pb-3 pt-5 text-text-accent border-b-3 border-primary transition-colors hover:text-primary"
-                activeProps={{
-                  className:
-                    "relative py-1 text-text-accent font-semibold after:absolute after:-bottom-px after:left-0 after:w-full after:h-[2px] after:bg-primary",
-                }}
+                className={cn(
+                  "relative pb-4 pt-4 transition-colors hover:text-primary",
+                  isActive
+                    ? "text-primary font-semibold border-b-3 border-primary"
+                    : "text-foreground",
+                )}
                 activeOptions={{ exact: true }}
               >
                 {item.label}
@@ -128,13 +138,18 @@ export function Header() {
               <button
                 key={item.label}
                 type="button"
-                className="py-1 text-foreground transition-colors hover:text-text-secondary"
+                className={cn(
+                  "relative pb-4 pt-4 transition-colors hover:text-primary",
+                  isActive
+                    ? "text-primary font-semibold border-b-3 border-primary"
+                    : "text-foreground",
+                )}
                 onClick={outOfScopeToast}
               >
                 {item.label}
               </button>
-            ),
-          )}
+            );
+          })}
         </nav>
 
         {/* Right actions */}
@@ -244,12 +259,16 @@ export function Header() {
         </div>
       )}
 
-      <nav
-        className="fixed inset-x-0 bottom-0 z-50 lg:hidden"
-        style={{ filter: "drop-shadow(0px -10px 30px #0A060473)" }}
-        aria-label="Navegação móvel"
-      >
-        {/* Background Layer */}
+      {/* Mobile expandable search bar */}
+      {/* ... */}
+      
+      {!pathname.startsWith("/nfts/") && (
+        <nav
+          className="fixed inset-x-0 bottom-0 z-50 lg:hidden"
+          style={{ filter: "drop-shadow(0px -10px 30px #0A060473)" }}
+          aria-label="Navegação móvel"
+        >
+          {/* Background Layer */}
         <div className="absolute inset-0 -z-10 flex pt-[1px]">
           <div className="flex-1 rounded-tl-[29px] bg-surface-card" />
           <svg
@@ -317,6 +336,7 @@ export function Header() {
           </Link>
         </div>
       </nav>
+      )}
     </header>
   );
 }
