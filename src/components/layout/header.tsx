@@ -118,7 +118,7 @@ export function Header() {
           {NAV_ITEMS.map((item) => {
             const isActive =
               (item.to === "/" && pathname === "/") ||
-              (item.label === "Mercado" && pathname.startsWith("/nfts"));
+              (item.label === "Mercado" && (pathname.startsWith("/nfts") || pathname === "/cart"));
 
             return item.to ? (
               <Link
