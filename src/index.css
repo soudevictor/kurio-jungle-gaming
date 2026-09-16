@@ -16,31 +16,28 @@
   --font-heading: "Geist Mono Variable", ui-monospace, "SFMono-Regular", monospace;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-surface: var(--surface);
-  --color-surface-foreground: var(--surface-foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+  --color-amber: var(--amber);
+  --color-foreground-color: var(--foreground-color);
+  --color-background-elevated: var(--background-elevated);
+  --color-white: var(--white);
+  --color-black: var(--black);
   --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
+  --color-surface-card: var(--surface-card);
+  --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--ink);
+  --color-surface-dark: var(--surface-dark);
   --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
+  --color-border-soft: var(--border-soft);
+  --color-gray-light: var(--gray-light);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-text-coral: var(--text-coral);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-accent: var(--text-accent);
+  --color-text-primary: var(--text-primary);
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.85);
@@ -50,50 +47,47 @@
 
 :root {
   /* Cores extraídas da inspeção do Figma (Desktop / Início, color/ink #140D0A) */
-  --background: #140d0a;
-  --foreground: #f5eee3;
-  --surface: #1a1008;
-  --surface-foreground: #f5eee3;
-  --card: #1c1008;
-  --card-foreground: #f5eee3;
-  --popover: #1e1209;
-  --popover-foreground: #f5eee3;
   --primary: #D28A4C;
-  --primary-foreground: #1a0800;
-  --secondary: #281a10;
-  --secondary-foreground: #f5eee3;
-  --muted: #281a10;
-  --muted-foreground: #a08878;
-  --accent: #D28A4C;
-  --accent-foreground: #1a0800;
-  --destructive: #e2542e;
-  --destructive-foreground: #fff5f2;
-  --success: #3ddc84;
-  --success-foreground: #06210f;
-  --border: rgba(245, 238, 227, 0.08);
-  --input: rgba(245, 238, 227, 0.12);
-  --ring: #D28A4C;
-  --chart-1: #D28A4C;
-  --chart-2: #ffd166;
+  --primary-light: #DD9A5F;
+  --primary-dark: #C47B3E;
+  --amber: #E3A44E;
+  --foreground-color: #F5F1EB;
+  --background-elevated: #FBFBFB;
+  --white: #FFFFFF;
+  --black: #000000;
+  --secondary: #B39463;
+  --surface-card: #241612;
+  --surface-raised: #2F1D15;
+  --ink: #140D0A;
+  --surface-dark: #38220F;
+  --border: #3F2319;
+  --border-soft: #55321F;
+  --gray-light: #EDEDED;
+  --success: #00A66C;
+  --error: #ED1B2E;
+  --text-coral: #EA6B4F;
+  --text-secondary: #CFB28C;
+  --text-accent: #E89B55;
+  --text-primary: #F7F3EC;
   --radius: 0.625rem;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border-soft outline-primary/50;
   }
   html {
     @apply font-sans scroll-smooth;
     color-scheme: dark;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-ink text-text-primary antialiased;
   }
 }
 
 @layer utilities {
   .container-kurio {
-    @apply mx-auto w-full max-w-[1100px] px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-0;
   }
 }
 

@@ -115,14 +115,14 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
           <button
             type="button"
             onClick={outOfScopeToast}
-            className="text-xs text-muted-foreground hover:text-foreground hover:underline"
+            className="text-xs text-text-secondary hover:text-text-primary hover:underline"
           >
             Esqueceu a senha?
           </button>
         </div>
 
         {form.formState.errors.root && (
-          <p role="alert" className="text-sm text-destructive">
+          <p role="alert" className="text-sm text-error">
             {form.formState.errors.root.message}
           </p>
         )}
@@ -235,7 +235,7 @@ function SignupForm({ onSuccess }: { onSuccess: () => void }) {
         />
 
         {form.formState.errors.root && (
-          <p role="alert" className="text-sm text-destructive">
+          <p role="alert" className="text-sm text-error">
             {form.formState.errors.root.message}
           </p>
         )}
@@ -257,10 +257,10 @@ function SocialAuth() {
     <>
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-border/60" />
+          <span className="w-full border-t border-border-soft/60" />
         </div>
         <div className="relative flex justify-center text-xs">
-          <span className="bg-[#1A110D] px-2 text-muted-foreground">Ou continue com</span>
+          <span className="bg-[#1A110D] px-2 text-text-secondary">Ou continue com</span>
         </div>
       </div>
       <div className="space-y-3">
@@ -328,7 +328,7 @@ export function AuthModal({ open, defaultTab = "login", onClose }: AuthModalProp
   return (
     <Dialog open={open} onOpenChange={(v) => !v && handleClose()}>
       <DialogContent
-        className="max-h-[90vh] w-full max-w-[440px] overflow-y-auto rounded-2xl border border-border/60 bg-[#1A110D] p-8 shadow-2xl"
+        className="max-h-[90vh] w-full max-w-[440px] overflow-y-auto rounded-2xl border border-border-soft/60 bg-[#1A110D] p-8 shadow-2xl"
         aria-describedby={undefined}
       >
         <DialogTitle className="sr-only">
@@ -336,14 +336,14 @@ export function AuthModal({ open, defaultTab = "login", onClose }: AuthModalProp
         </DialogTitle>
 
         {/* Tab switcher */}
-        <div className="mb-6 flex gap-6 border-b border-border/40 pb-4 font-heading text-xl font-semibold text-muted-foreground">
+        <div className="mb-6 flex gap-6 border-b border-border-soft/40 pb-4 font-heading text-xl font-semibold text-text-secondary">
           <button
             type="button"
             onClick={() => setActiveTab("login")}
             className={
               activeTab === "login"
                 ? "relative text-primary after:absolute after:bottom-[-17px] after:left-0 after:h-0.5 after:w-full after:bg-primary"
-                : "transition-colors hover:text-foreground"
+                : "transition-colors hover:text-text-primary"
             }
           >
             Entrar
@@ -354,7 +354,7 @@ export function AuthModal({ open, defaultTab = "login", onClose }: AuthModalProp
             className={
               activeTab === "signup"
                 ? "relative text-primary after:absolute after:bottom-[-17px] after:left-0 after:h-0.5 after:w-full after:bg-primary"
-                : "transition-colors hover:text-foreground"
+                : "transition-colors hover:text-text-primary"
             }
           >
             Criar conta
@@ -362,7 +362,7 @@ export function AuthModal({ open, defaultTab = "login", onClose }: AuthModalProp
         </div>
 
         {/* Subtitle */}
-        <p className="mb-6 mt-1 text-sm leading-relaxed text-muted-foreground">
+        <p className="mb-6 mt-1 text-sm leading-relaxed text-text-secondary">
           {activeTab === "login"
             ? "Acesse seu perfil de colecionador, acompanhe suas coleções favoritas e conecte sua carteira."
             : "Crie seu perfil de colecionador e conecte uma carteira quando quiser."}
@@ -378,7 +378,7 @@ export function AuthModal({ open, defaultTab = "login", onClose }: AuthModalProp
         <SocialAuth />
 
         {/* Test credentials hint */}
-        <div className="mt-4 rounded-lg border border-border/40 bg-card/30 p-3 text-xs text-muted-foreground">
+        <div className="mt-4 rounded-lg border border-border-soft/40 bg-surface-card/30 p-3 text-xs text-text-secondary">
           Credenciais de teste: <strong>collector@kurio.app</strong> / <strong>artlover@kurio.app</strong>
           <br />
           Senha: <strong>kurio123</strong>

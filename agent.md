@@ -1,23 +1,31 @@
-# 🎨 Kurio NFT Marketplace - Regras Pixel Perfect (Desktop + Mobile)
+# 🎨 Kurio NFT Marketplace - Especificação Pixel Perfect (Master Spec)
 
-## 🎯 Objetivo
-Você é um Engenheiro Front-end sênior especialista em UI/UX, Tailwind CSS e responsividade (Mobile-First). Sua missão é analisar imagens de referência (Figma) e da implementação atual, comparando SIMULTANEAMENTE as versões Desktop e Mobile, para atingir **100% de fidelidade visual (Pixel Perfect)** em ambas as telas.
+## 🎯 Diretriz Principal
+Seu objetivo é atuar como um UI/UX Engineer e garantir que a aplicação React/Tailwind corresponda 100% ao Figma. O projeto usa `shadcn/ui`. Você NÃO deve alterar a lógica de roteamento ou requisições, APENAS a árvore do DOM e as classes Tailwind.
 
-## 🛠️ Stack Visual e Identidade
-- **CSS Framework:** Tailwind CSS. Use as classes responsivas (`sm:`, `md:`, `lg:`, `xl:`) para diferenciar layouts mobile e desktop.
-- **Componentes Base:** shadcn/ui.
-- **Tema:** Estritamente Escuro (Dark Mode). Fundo marrom ultra-escuro, destaques em laranja/terroso.
+## 🎨 1. Design Tokens & Identidade Global
+- **Background Principal:** Escuro terroso/sépia profundo. Extraia o HEX exato do Figma (ex: `bg-[#1A1514]` ou via variáveis CSS `--background`).
+- **Cor Primária (Destaque):** Laranja/Cobre vibrante. Usado no botão primário, ícones ativos, bordas de input em focus, tag "RARO" e asteriscos `*` de campos obrigatórios.
+- **Tipografia:**
+  - Fonte sem serifa para a UI geral.
+  - **MANDATÓRIO:** Todos os valores numéricos (preços em `ETH`, totais) e identificadores (ex: `#0042`) DEVEM utilizar as classes `font-mono` e `tabular-nums` para alinhamento vertical perfeito.
+  - Textos de apoio ("Taxa de rede", "Edição") usam cinza mutado (`text-muted-foreground`).
 
-## 👁️ Diretrizes de Auditoria Visual (Desktop e Mobile):
-Ao analisar os pares de imagens (Figma Desktop/Mobile vs Localhost Desktop/Mobile), verifique:
-1. **Comportamento Responsivo (Layout):** 
-   - Elementos que são lado a lado no Desktop (`flex-row`, `grid-cols-2`) empilham no Mobile (`flex-col`, `grid-cols-1`). Verifique a transição com `md:` ou `lg:`.
-   - Barras de navegação mudam drasticamente (Menu superior no Desktop vs. Nav Bar flutuante inferior no Mobile).
-2. **Espaçamentos Dinâmicos:** As margens e paddings são menores no mobile (`p-4`) e maiores no desktop (`md:p-8`).
-3. **Tipografia:** Títulos grandes no desktop reduzem no mobile (`text-2xl md:text-4xl`).
-4. **Imagens e Assets:** Verifique se as imagens não "estouram" a largura da tela no mobile e se mantêm o `aspect-ratio` (`aspect-square`) no desktop.
+## 📱 2. Responsividade (Desktop vs Mobile)
+Utilize a abordagem Mobile-First do Tailwind. O padrão é Mobile; prefixos `md:` ou `lg:` são para Desktop.
 
-## 📝 Ciclo de Ação
-1. **Diagnóstico Duplo:** Liste as discrepâncias encontradas no Desktop E no Mobile.
-2. **Plano de Classes:** Diga quais classes Tailwind base serão usadas para Mobile e quais com prefixos (`md:`, `lg:`) para Desktop.
-3. **Código:** Forneça o componente refatorado, garantindo o funcionamento perfeito em ambas as viewports.
+- **Header / Navegação:**
+  - *Desktop:* Logo à esquerda, Links centralizados, Busca/Carrinho/Login à direita.
+  - *Mobile:* Barra de busca expandida no topo. Navegação principal vai para uma **App Bar inferior flutuante** com bordas arredondadas e ícones.
+- **Catálogo / Sidebar:**
+  - *Desktop:* Sidebar de filtros visível à esquerda (Coleções, Faixa de Preço com slider, Redes). Grid de NFTs à direita.
+  - *Mobile:* Sidebar oculta (vira um ícone de filtros na busca). Grid de NFTs em 2 colunas.
+
+## 🧩 3. Componentes Específicos (Checklist de Correção)
+- **Cards de NFT:** Imagens com `aspect-square` e `object-cover`. A tag "RARO" tem fundo laranja sólido, texto escuro, posicionamento `absolute top-0 left-0`.
+- **Carrinho (Sidebar):** Controles de quantidade (`-` e `+`) com fundo laranja e ícones escuros.
+- **Formulários:** Inputs com fundo preenchido sutilmente mais claro que a página. Asterisco `*` de obrigatoriedade sempre Laranja.
+- **Rádios de Carteira:** No checkout, as opções (MetaMask, Coinbase) são "Cards" selecionáveis, com borda sutil e o `radio button` à direita.
+
+## ⏳ 4. Skeletons (Critério Eliminatório)
+Substitua qualquer tela em branco de carregamento por **Skeletons com shimmer effect**. Eles devem ter exatamente a mesma proporção geométrica do componente real (ex: caixas quadradas para os NFTs) para evitar deslocamento de layout (CLS zero).
