@@ -15,6 +15,9 @@ export const catalogSearchSchema = z.object({
     .default("all"),
   sort: z.enum(["relevance", "price-asc", "price-desc", "recent", "trending"]).catch("relevance").default("relevance"),
   page: z.number().int().min(1).catch(1).default(1),
+  minPrice: z.string().optional(),
+  maxPrice: z.string().optional(),
+  networks: z.array(z.string()).optional(),
 })
 
 export type CatalogSearch = z.infer<typeof catalogSearchSchema>
