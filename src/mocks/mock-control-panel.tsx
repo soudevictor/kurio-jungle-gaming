@@ -52,7 +52,7 @@ export function MockControlPanel() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 w-72 rounded-xl border border-border-soft/60 bg-surface-card p-4 text-text-primary shadow-xl">
+    <div className="fixed bottom-4 right-4 z-50 w-72 rounded-xl border border-border/60 bg-popover p-4 text-popover-foreground shadow-xl">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold">Cenários de mock</h2>
         <Button variant="ghost" size="icon-sm" aria-label="Fechar painel" onClick={() => setOpen(false)}>
@@ -71,7 +71,7 @@ export function MockControlPanel() {
           ))}
         </SelectContent>
       </Select>
-      <p className="mt-2 text-xs text-text-secondary">
+      <p className="mt-2 text-xs text-muted-foreground">
         Afeta latência e falhas simuladas nas próximas requisições. Recarregue a página para reaplicar a telas já
         carregadas.
       </p>

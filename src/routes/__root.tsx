@@ -32,10 +32,10 @@ function RootLayout() {
   }
 
   return (
-    <div className="flex min-h-svh flex-col bg-ink text-text-primary">
+    <div className="flex min-h-svh flex-col bg-background text-foreground">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-ink"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
       >
         Pular para o conteúdo
       </a>
@@ -62,7 +62,7 @@ function NotFound() {
     <div className="container-kurio flex min-h-[60vh] flex-col items-center justify-center text-center">
       <p className="font-heading text-6xl font-bold text-primary">404</p>
       <h1 className="mt-2 font-heading text-2xl font-bold">Página não encontrada</h1>
-      <p className="mt-1 text-text-secondary">O endereço acessado não existe.</p>
+      <p className="mt-1 text-muted-foreground">O endereço acessado não existe.</p>
       <Button className="mt-6" asChild>
         <Link to="/">Voltar ao início</Link>
       </Button>

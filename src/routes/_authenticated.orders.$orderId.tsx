@@ -37,12 +37,12 @@ function OrderConfirmationPage() {
 
   return (
     <div className="container-kurio max-w-xl py-16">
-      <div className="rounded-xl border border-border-soft/60 bg-surface-card p-6 text-center" aria-live="polite">
+      <div className="rounded-xl border border-border/60 bg-card p-6 text-center" aria-live="polite">
         {order.status === "pending" && (
           <>
             <Clock className="mx-auto size-10 animate-pulse text-primary" aria-hidden />
             <h1 className="mt-4 font-heading text-2xl font-bold">Confirmando seu pedido…</h1>
-            <p className="mt-1 text-sm text-text-secondary">
+            <p className="mt-1 text-sm text-muted-foreground">
               Estamos aguardando a confirmação da transação simulada. Isso leva alguns segundos.
             </p>
           </>
@@ -51,14 +51,14 @@ function OrderConfirmationPage() {
           <>
             <CheckCircle2 className="mx-auto size-10 text-success" aria-hidden />
             <h1 className="mt-4 font-heading text-2xl font-bold">Pedido confirmado!</h1>
-            <p className="mt-1 text-sm text-text-secondary">Sua compra foi concluída com sucesso.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Sua compra foi concluída com sucesso.</p>
           </>
         )}
         {order.status === "refused" && (
           <>
-            <XCircle className="mx-auto size-10 text-error" aria-hidden />
+            <XCircle className="mx-auto size-10 text-destructive" aria-hidden />
             <h1 className="mt-4 font-heading text-2xl font-bold">Pagamento recusado</h1>
-            <p className="mt-1 text-sm text-text-secondary">
+            <p className="mt-1 text-sm text-muted-foreground">
               Não foi possível confirmar a transação simulada. Nenhum valor foi cobrado.
             </p>
           </>
@@ -66,16 +66,16 @@ function OrderConfirmationPage() {
 
         <dl className="mt-6 grid grid-cols-2 gap-3 text-left text-sm">
           <div>
-            <dt className="text-xs text-text-secondary">Pedido</dt>
+            <dt className="text-xs text-muted-foreground">Pedido</dt>
             <dd className="font-mono text-xs">{order.id}</dd>
           </div>
           <div>
-            <dt className="text-xs text-text-secondary">Rede</dt>
+            <dt className="text-xs text-muted-foreground">Rede</dt>
             <dd>{NETWORK_LABEL[order.network] ?? order.network}</dd>
           </div>
           {order.txHash && (
             <div className="col-span-2">
-              <dt className="text-xs text-text-secondary">Transação (simulada)</dt>
+              <dt className="text-xs text-muted-foreground">Transação (simulada)</dt>
               <dd className="flex items-center gap-1 font-mono text-xs">
                 {order.txHash.slice(0, 10)}…{order.txHash.slice(-6)}
                 <ExternalLink className="size-3" aria-hidden />
@@ -96,9 +96,9 @@ function OrderConfirmationPage() {
           ))}
         </ul>
 
-        <dl className="mt-4 space-y-1.5 border-t border-border-soft/60 pt-4 text-left text-sm">
+        <dl className="mt-4 space-y-1.5 border-t border-border/60 pt-4 text-left text-sm">
           <div className="flex justify-between">
-            <dt className="text-text-secondary">Subtotal</dt>
+            <dt className="text-muted-foreground">Subtotal</dt>
             <dd>{formatEth(order.subtotalEth)}</dd>
           </div>
           {order.couponCode && (
@@ -108,7 +108,7 @@ function OrderConfirmationPage() {
             </div>
           )}
           <div className="flex justify-between">
-            <dt className="text-text-secondary">Taxa de rede</dt>
+            <dt className="text-muted-foreground">Taxa de rede</dt>
             <dd>{formatEth(order.networkFeeEth)}</dd>
           </div>
           <div className="flex justify-between font-heading text-base font-semibold">

@@ -81,21 +81,21 @@ function WalletsPage() {
       )}
 
       {!isLoading && wallets?.length === 0 && (
-        <div className="rounded-xl border border-dashed border-border-soft/60 p-8 text-center text-sm text-text-secondary">
+        <div className="rounded-xl border border-dashed border-border/60 p-8 text-center text-sm text-muted-foreground">
           Você ainda não tem carteiras cadastradas.
         </div>
       )}
 
       <div className="space-y-3">
         {wallets?.map((wallet) => (
-          <div key={wallet.id} className="flex items-center justify-between rounded-xl border border-border-soft/60 bg-surface-card p-4">
+          <div key={wallet.id} className="flex items-center justify-between rounded-xl border border-border/60 bg-card p-4">
             <div className="flex items-center gap-3">
-              <WalletIcon className="size-5 text-text-secondary" />
+              <WalletIcon className="size-5 text-muted-foreground" />
               <div>
                 <p className="font-medium">
                   {wallet.label} {wallet.isPrimary && <Badge className="ml-1 align-middle">Principal</Badge>}
                 </p>
-                <p className="font-mono text-xs text-text-secondary">
+                <p className="font-mono text-xs text-muted-foreground">
                   {wallet.address.slice(0, 8)}…{wallet.address.slice(-6)} · {NETWORK_LABEL[wallet.network]}
                 </p>
               </div>
@@ -206,7 +206,7 @@ function WalletForm({ wallet, onDone }: { wallet: Wallet | null; onDone: () => v
             type="checkbox"
             checked={form.watch("isPrimary")}
             onChange={(e) => form.setValue("isPrimary", e.target.checked)}
-            className="size-4 rounded border-border-soft"
+            className="size-4 rounded border-border"
           />
           Definir como carteira principal
         </label>
