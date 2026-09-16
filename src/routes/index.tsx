@@ -71,7 +71,7 @@ function HomePage() {
   return (
     <div>
       {/* ─── Hero Section ─────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-background">
+      <section className="relative overflow-hidden bg-ink">
         {/* Desktop Hero */}
         <div className="container-kurio hidden items-center gap-16 py-12 lg:grid lg:grid-cols-[1fr_360px]">
           <div className="max-w-[460px]">
@@ -79,7 +79,7 @@ function HomePage() {
             <h1 className="font-heading text-4xl font-bold uppercase leading-[1.25] tracking-tight">
               Seja dono do futuro da arte digital
             </h1>
-            <p className="mt-3 max-w-md text-xs leading-relaxed text-muted-foreground">
+            <p className="mt-3 max-w-md text-xs leading-relaxed text-text-secondary">
               Descubra NFTs selecionados de criadores emergentes e consagrados. Colecione arte digital rara, apoie
               artistas e tenha uma parte da cultura da internet.
             </p>
@@ -96,7 +96,7 @@ function HomePage() {
                   key={i}
                   className={cn(
                     "block size-2 rounded-full transition-colors",
-                    i === 0 ? "bg-primary" : "bg-foreground/30",
+                    i === 0 ? "bg-primary" : "bg-text-primary/20",
                   )}
                 />
               ))}
@@ -121,11 +121,11 @@ function HomePage() {
           <div className="relative flex h-[188px] items-start gap-2 px-4 py-3">
             {/* Text */}
             <div className="flex-1">
-              <p className="mb-1 text-xs font-medium text-foreground">Bem-vindo à Kurio</p>
-              <h1 className="font-heading text-xl font-bold uppercase leading-[1.45] tracking-tight text-foreground">
+              <p className="mb-1 text-xs font-medium text-text-primary">Bem-vindo à Kurio</p>
+              <h1 className="font-heading text-xl font-bold uppercase leading-[1.45] tracking-tight text-text-primary">
                 Seja dono da cultura digital
               </h1>
-              <p className="mt-2 text-xs leading-relaxed text-foreground/70">
+              <p className="mt-2 text-xs leading-relaxed text-text-primary/70">
                 Descubra NFTs selecionados de criadores do mundo todo.
               </p>
               <a
@@ -167,7 +167,7 @@ function HomePage() {
             {[0, 1, 2].map((i) => (
               <span
                 key={i}
-                className={cn("block size-2 rounded-full transition-colors", i === 0 ? "bg-primary" : "bg-foreground/30")}
+                className={cn("block size-2 rounded-full transition-colors", i === 0 ? "bg-primary" : "bg-text-primary/20")}
               />
             ))}
           </div>
@@ -190,7 +190,7 @@ function HomePage() {
           {/* Main content */}
           <div>
             {/* Tabs + Sort row */}
-            <div className="mb-4 flex flex-col gap-1 border-b border-border/60 lg:mb-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="mb-4 flex flex-col gap-1 border-b border-border-soft/60 lg:mb-6 lg:flex-row lg:items-end lg:justify-between">
               {/* Tab navigation */}
               <nav className="flex gap-0 overflow-x-auto" aria-label="Filtrar por destaque">
                 {TAB_OPTIONS.map((tab) => {
@@ -204,7 +204,7 @@ function HomePage() {
                         "relative whitespace-nowrap px-2 py-2 text-xs font-medium transition-colors sm:px-4 sm:py-3 sm:text-sm",
                         isActive
                           ? "text-primary after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-primary"
-                          : "text-muted-foreground hover:text-foreground",
+                          : "text-text-secondary hover:text-text-primary",
                       )}
                     >
                       {tab.label}
@@ -215,7 +215,7 @@ function HomePage() {
 
               {/* Sort dropdown */}
               <div className="hidden items-center gap-2 pb-3 lg:flex">
-                <span className="text-xs text-muted-foreground">Ordenar por:</span>
+                <span className="text-xs text-text-secondary">Ordenar por:</span>
                 <Select
                   value={search.sort}
                   onValueChange={(v) => updateSearch({ sort: v as typeof search.sort, page: 1 })}
@@ -238,7 +238,7 @@ function HomePage() {
             </div>
 
             {isError && (
-              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-6 text-center text-sm text-destructive">
+              <div className="rounded-lg border border-error/30 bg-error/10 p-6 text-center text-sm text-error">
                 Não foi possível carregar o catálogo agora. Tente novamente em instantes.
               </div>
             )}
@@ -246,9 +246,9 @@ function HomePage() {
             {isLoading && <NftGridSkeleton />}
 
             {!isLoading && !isError && data && data.items.length === 0 && (
-              <div className="rounded-lg border border-border/60 bg-card p-12 text-center">
+              <div className="rounded-lg border border-border-soft/60 bg-surface-card p-12 text-center">
                 <p className="font-heading text-lg font-semibold">Nenhum NFT encontrado</p>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-sm text-text-secondary">
                   Tente ajustar a busca ou remover alguns filtros.
                 </p>
               </div>

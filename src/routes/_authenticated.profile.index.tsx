@@ -82,7 +82,7 @@ function ProfilePage() {
     <div className="container-kurio max-w-2xl space-y-8 py-10">
       <h1 className="font-heading text-2xl font-bold">Perfil do colecionador</h1>
 
-      <section className="rounded-xl border border-border/60 bg-card p-5">
+      <section className="rounded-xl border border-border-soft/60 bg-surface-card p-5">
         <div className="mb-4 flex items-center gap-3">
           <Avatar className="size-14">
             <AvatarImage src={user?.avatarUrl ?? undefined} alt="" />
@@ -90,7 +90,7 @@ function ProfilePage() {
           </Avatar>
           <div>
             <p className="font-medium">{user?.name}</p>
-            <p className="text-sm text-muted-foreground">{user?.email}</p>
+            <p className="text-sm text-text-secondary">{user?.email}</p>
           </div>
         </div>
 
@@ -129,8 +129,8 @@ function ProfilePage() {
         </Form>
       </section>
 
-      <section className="rounded-xl border border-border/60 bg-card p-5">
-        <h2 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+      <section className="rounded-xl border border-border-soft/60 bg-surface-card p-5">
+        <h2 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wide text-text-secondary">
           Alterar senha
         </h2>
         <Form {...passwordForm}>
