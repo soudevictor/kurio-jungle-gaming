@@ -32,3 +32,6 @@ e2e/.auth
 *.njsproj
 *.sln
 *.sw?
+
+# TanStack Router
+.tanstack
