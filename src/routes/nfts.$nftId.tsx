@@ -480,6 +480,16 @@ function NftDetailPage() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────── Mobile */}
+
+      {/* Global style para empurrar o body inteiro (incluindo o Footer) e não ficar oculto pelo painel fixo no mobile */}
+      <style>{`
+        @media (max-width: 767px) {
+          body {
+            padding-bottom: 60px;
+          }
+        }
+      `}</style>
+
       <div className="lg:hidden">
         {/* Mobile Header (Back + Favorite) */}
         <div className="flex items-center justify-between p-4 md:hidden">
