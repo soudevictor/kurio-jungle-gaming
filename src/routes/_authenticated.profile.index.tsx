@@ -3,11 +3,11 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
+import { EyeOff } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { useAuth } from "@/features/auth/auth-context"
 import { useChangePassword, useUpdateProfile } from "@/features/profile/use-profile"
 import { ApiError } from "@/lib/api/client"
@@ -17,8 +17,11 @@ export const Route = createFileRoute("/_authenticated/profile/")({
 })
 
 const profileSchema = z.object({
-  name: z.string().min(2, "Informe seu nome completo."),
-  bio: z.string().max(280, "Máximo de 280 caracteres.").optional(),
+  name: z.string().min(2, "Informe seu nome de exibição."),
+  username: z.string().min(2, "Informe seu nome de usuário."),
+  email: z.string().email("E-mail inválido."),
+  ensName: z.string().min(1, "Informe seu Nome ENS."),
+  walletAlias: z.string().min(1, "Informe o apelido da carteira."),
 })
 
 const passwordSchema = z
@@ -32,14 +35,20 @@ const passwordSchema = z
     path: ["confirmPassword"],
   })
 
-function ProfilePage() {
+export function ProfilePage() {
   const { user } = useAuth()
   const updateProfile = useUpdateProfile()
   const changePassword = useChangePassword()
 
   const profileForm = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
-    defaultValues: { name: user?.name ?? "", bio: user?.bio ?? "" },
+    defaultValues: { 
+      name: user?.name ?? "", 
+      username: "", 
+      email: user?.email ?? "",
+      ensName: "",
+      walletAlias: ""
+    },
   })
 
   const passwordForm = useForm<z.infer<typeof passwordSchema>>({
@@ -49,7 +58,7 @@ function ProfilePage() {
 
   async function onSubmitProfile(values: z.infer<typeof profileSchema>) {
     try {
-      await updateProfile.mutateAsync(values)
+      await updateProfile.mutateAsync({ name: values.name }) // Simplified for existing mutation
       toast.success("Perfil atualizado")
     } catch (err) {
       if (err instanceof ApiError && err.fields) {
@@ -79,107 +88,193 @@ function ProfilePage() {
   }
 
   return (
-    <div className="container-kurio max-w-2xl space-y-8 py-10">
-      <h1 className="font-heading text-2xl font-bold">Perfil do colecionador</h1>
+    <div className="w-full max-w-4xl">
+      <h1 className="mb-8 font-heading text-xl md:text-2xl font-bold text-text-primary">Perfil do colecionador</h1>
 
-      <section className="rounded-xl border border-border-soft/60 bg-surface-card p-5">
-        <div className="mb-4 flex items-center gap-3">
-          <Avatar className="size-14">
-            <AvatarImage src={user?.avatarUrl ?? undefined} alt="" />
-            <AvatarFallback>{user?.name?.[0]?.toUpperCase()}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-medium">{user?.name}</p>
-            <p className="text-sm text-text-secondary">{user?.email}</p>
-          </div>
-        </div>
-
-        <Form {...profileForm}>
-          <form onSubmit={profileForm.handleSubmit(onSubmitProfile)} className="space-y-4" noValidate>
+      {/* Main Profile Form */}
+      <Form {...profileForm}>
+        <form onSubmit={profileForm.handleSubmit(onSubmitProfile)} className="space-y-8" noValidate>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={profileForm.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome</FormLabel>
+                  <FormLabel className="text-text-secondary">
+                    Nome de exibição <span className="text-primary">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input className="bg-black/40 border-border-soft h-10 md:h-12" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={profileForm.control}
-              name="bio"
+              name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bio</FormLabel>
+                  <FormLabel className="text-text-secondary">
+                    Nome de usuário <span className="text-primary">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Textarea rows={3} {...field} />
+                    <Input className="bg-black/40 border-border-soft h-10 md:h-12" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={updateProfile.isPending}>
-              {updateProfile.isPending ? "Salvando…" : "Salvar alterações"}
-            </Button>
-          </form>
-        </Form>
-      </section>
 
-      <section className="rounded-xl border border-border-soft/60 bg-surface-card p-5">
-        <h2 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wide text-text-secondary">
+            <FormField
+              control={profileForm.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-text-secondary">
+                    E-mail <span className="text-primary">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="bg-black/40 border-border-soft h-10 md:h-12" type="email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={profileForm.control}
+              name="ensName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-text-secondary">
+                    Nome ENS <span className="text-primary">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <div className="flex">
+                      <select className="h-10 md:h-12 w-[80px] rounded-l-lg border border-r-0 border-border-soft bg-black/40 px-3 text-sm text-text-primary outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary">
+                        <option value=".eth">.eth</option>
+                      </select>
+                      <Input className="flex-1 rounded-l-none bg-black/40 border-border-soft h-10 md:h-12 focus-visible:z-10" {...field} />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={profileForm.control}
+              name="walletAlias"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-text-secondary">
+                    Apelido da carteira <span className="text-primary">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="bg-black/40 border-border-soft h-10 md:h-12" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </form>
+      </Form>
+
+      {/* Avatar Section */}
+      <div className="mt-8">
+        <h2 className="mb-4 font-heading text-sm font-semibold text-text-secondary">
+          Avatar
+        </h2>
+        <div className="flex flex-row items-center gap-4">
+          <Avatar className="size-16 border border-border-soft">
+            <AvatarImage src={user?.avatarUrl ?? undefined} alt="" />
+            <AvatarFallback className="bg-surface-card text-lg">{user?.name?.[0]?.toUpperCase()}</AvatarFallback>
+          </Avatar>
+          <Button type="button" className="bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-6 font-medium">
+            Alterar
+          </Button>
+          <Button type="button" variant="ghost" className="text-text-secondary hover:text-text-primary hover:bg-transparent h-10 px-4 font-medium">
+            Remover
+          </Button>
+        </div>
+      </div>
+
+      {/* Password Section */}
+      <div className="mt-10 max-w-sm">
+        <h2 className="mb-4 font-heading text-sm font-semibold text-text-secondary">
           Alterar senha
         </h2>
         <Form {...passwordForm}>
-          <form onSubmit={passwordForm.handleSubmit(onSubmitPassword)} className="space-y-4" noValidate>
+          <form onSubmit={passwordForm.handleSubmit(onSubmitPassword)} className="flex flex-col space-y-4" noValidate>
             <FormField
               control={passwordForm.control}
               name="currentPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Senha atual</FormLabel>
+                  <FormLabel className="text-text-secondary">Senha atual</FormLabel>
                   <FormControl>
-                    <Input type="password" autoComplete="current-password" {...field} />
+                    <div className="relative">
+                      <Input type="password" autoComplete="current-password" className="bg-black/40 border-border-soft h-10 md:h-12 pr-10" {...field} />
+                      <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-text-primary">
+                        <EyeOff className="size-4" />
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            
             <FormField
               control={passwordForm.control}
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nova senha</FormLabel>
+                  <FormLabel className="text-text-secondary">Nova senha</FormLabel>
                   <FormControl>
-                    <Input type="password" autoComplete="new-password" {...field} />
+                    <div className="relative">
+                      <Input type="password" autoComplete="new-password" className="bg-black/40 border-border-soft h-10 md:h-12 pr-10" {...field} />
+                      <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-text-primary">
+                        <EyeOff className="size-4" />
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            
             <FormField
               control={passwordForm.control}
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirmar nova senha</FormLabel>
+                  <FormLabel className="text-text-secondary">Confirmar nova senha</FormLabel>
                   <FormControl>
-                    <Input type="password" autoComplete="new-password" {...field} />
+                    <div className="relative">
+                      <Input type="password" autoComplete="new-password" className="bg-black/40 border-border-soft h-10 md:h-12 pr-10" {...field} />
+                      <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-text-primary">
+                        <EyeOff className="size-4" />
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" variant="outline" disabled={changePassword.isPending}>
-              {changePassword.isPending ? "Alterando…" : "Alterar senha"}
-            </Button>
+            
+            <div className="pt-4 mb-34 md:mb-0">
+              <Button type="button" onClick={profileForm.handleSubmit(onSubmitProfile)} className="bg-primary text-primary-foreground hover:bg-primary/90 h-10 md:h-12 px-8 font-medium w-fit min-w-[120px]">
+                {updateProfile.isPending || changePassword.isPending ? "Salvando…" : "Salvar"}
+              </Button>
+            </div>
           </form>
         </Form>
-      </section>
+      </div>
     </div>
   )
 }
+

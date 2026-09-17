@@ -26,6 +26,7 @@ function RootLayout() {
 
   const isCheckoutRoute = pathname === "/checkout"
   const isOrderRoute = pathname.startsWith("/orders")
+  const isProfileRoute = pathname.startsWith("/profile")
 
   return (
     <div className="flex min-h-svh flex-col bg-ink text-text-primary">
@@ -40,7 +41,7 @@ function RootLayout() {
       <main id="main-content" className="flex-1">
         <Outlet />
       </main>
-      {!isOrderRoute && (
+      {!isOrderRoute && !isProfileRoute && (
         <div className={isCheckoutRoute ? "hidden md:block" : ""}>
           <Footer />
         </div>
