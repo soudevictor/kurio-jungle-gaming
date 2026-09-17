@@ -1,11 +1,12 @@
 import type { QueryClient } from "@tanstack/react-query"
-import { createRootRouteWithContext, Link, Outlet, useRouterState, useNavigate } from "@tanstack/react-router"
+import { createRootRouteWithContext, Link, Outlet, useRouterState } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
 import { AuthModal } from "@/components/auth/auth-modal"
 import { MockControlPanel } from "@/mocks/mock-control-panel"
 import { Footer } from "@/components/layout/footer"
 import { Header } from "@/components/layout/header"
 import { SessionExpiryWatcher } from "@/features/auth/session-expiry-watcher"
+import { useAuth } from "@/features/auth/auth-context"
 
 interface RouterContext {
   queryClient: QueryClient
@@ -20,18 +21,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootLayout() {
   const routerState = useRouterState()
-  const navigate = useNavigate()
   const pathname = routerState.location.pathname
+  const { authModalOpen, authModalTab, closeAuthModal } = useAuth()
 
-  const isLoginRoute = pathname === "/login"
-  const isSignupRoute = pathname === "/signup"
   const isCheckoutRoute = pathname === "/checkout"
   const isOrderRoute = pathname.startsWith("/orders")
-  const isAuthModal = isLoginRoute || isSignupRoute
-
-  function handleModalClose() {
-    navigate({ to: "/" })
-  }
 
   return (
     <div className="flex min-h-svh flex-col bg-ink text-text-primary">
@@ -55,9 +49,9 @@ function RootLayout() {
 
       {/* Auth modals — rendered as overlays instead of navigating to separate pages */}
       <AuthModal
-        open={isAuthModal}
-        defaultTab={isSignupRoute ? "signup" : "login"}
-        onClose={handleModalClose}
+        open={authModalOpen}
+        defaultTab={authModalTab}
+        onClose={closeAuthModal}
       />
     </div>
   )

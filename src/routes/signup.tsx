@@ -1,7 +1,19 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { useEffect } from "react"
+import { useAuth } from "@/features/auth/auth-context"
 
-// This route exists so /signup is a valid URL. Rendering is handled by the
-// AuthModal in __root.tsx which detects this pathname and opens the dialog.
 export const Route = createFileRoute("/signup")({
-  component: () => null,
+  component: SignupComponent,
 })
+
+function SignupComponent() {
+  const { openAuthModal } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    openAuthModal("signup")
+    navigate({ to: "/", replace: true })
+  }, [openAuthModal, navigate])
+
+  return null
+}
