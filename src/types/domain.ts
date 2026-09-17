@@ -104,6 +104,7 @@ export type Network = "ethereum" | "polygon" | "base"
 export interface Wallet {
   id: ID
   label: string
+  name?: string
   address: string
   network: Network
   isPrimary: boolean

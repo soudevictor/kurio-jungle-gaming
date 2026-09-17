@@ -262,7 +262,7 @@ export function Header() {
       {/* Mobile expandable search bar */}
       {/* ... */}
       
-      {!pathname.startsWith("/nfts/") && (
+      {!pathname.startsWith("/nfts/") && pathname !== "/checkout" && (
         <nav
           className="fixed inset-x-0 bottom-0 z-50 lg:hidden"
           style={{ filter: "drop-shadow(0px -10px 30px #0A060473)" }}

@@ -12,7 +12,7 @@ import {
 } from "./data/fixtures"
 import { hashString } from "./data/rng"
 
-const STORAGE_KEY = "kurio.mock.db.v2"
+const STORAGE_KEY = "kurio.mock.db.v3"
 
 interface Session {
   token: string
