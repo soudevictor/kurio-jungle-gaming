@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { createContext, useContext, useMemo, type ReactNode } from "react"
+import { createContext, useContext, useMemo, useState, type ReactNode } from "react"
 import { ApiError } from "@/lib/api/client"
 import { authApi, cartApi } from "@/lib/api/endpoints"
 import { queryKeys } from "@/lib/query/keys"
@@ -18,6 +18,10 @@ interface AuthContextValue {
   registerError: ApiErrorBody["error"] | null
   isRegistering: boolean
   logout: () => Promise<void>
+  authModalOpen: boolean
+  authModalTab: "login" | "signup"
+  openAuthModal: (tab: "login" | "signup") => void
+  closeAuthModal: () => void
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -28,6 +32,8 @@ function toErrorBody(error: unknown): ApiErrorBody["error"] | null {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient()
+  const [authModalOpen, setAuthModalOpen] = useState(false)
+  const [authModalTab, setAuthModalTab] = useState<"login" | "signup">("login")
 
   const sessionQuery = useQuery({
     queryKey: queryKeys.session(),
@@ -83,8 +89,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       registerError: toErrorBody(registerMutation.error),
       isRegistering: registerMutation.isPending,
       logout: () => logoutMutation.mutateAsync(),
+      authModalOpen,
+      authModalTab,
+      openAuthModal: (tab) => {
+        setAuthModalTab(tab)
+        setAuthModalOpen(true)
+      },
+      closeAuthModal: () => setAuthModalOpen(false),
     }),
-    [sessionQuery.data, sessionQuery.isLoading, loginMutation, registerMutation, logoutMutation],
+    [sessionQuery.data, sessionQuery.isLoading, loginMutation, registerMutation, logoutMutation, authModalOpen, authModalTab],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

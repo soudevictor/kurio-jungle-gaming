@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useNavigate, useRouter } from "@tanstack/react-router"
+
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
+import { Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -48,6 +49,7 @@ function outOfScopeToast() {
 
 function LoginForm({ onSuccess }: { onSuccess: () => void }) {
   const { login, isLoggingIn } = useAuth()
+  const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -84,7 +86,7 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
                   type="email"
                   autoComplete="email"
                   placeholder="Digite seu e-mail"
-                  className="h-12 bg-transparent"
+                  className="h-12 sm:h-14 bg-transparent border-border-soft px-4"
                   {...field}
                 />
               </FormControl>
@@ -98,24 +100,34 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder="Senha"
-                  className="h-12 bg-transparent"
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    placeholder="Senha"
+                    className="h-12 sm:h-14 bg-transparent border-border-soft px-4 pr-12"
+                    {...field}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary focus:outline-none"
+                    aria-label={showPassword ? "Ocultar senha" : "Exibir senha"}
+                  >
+                    {showPassword ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
+                  </button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <div className="flex justify-start">
+        <div className="flex justify-end">
           <button
             type="button"
             onClick={outOfScopeToast}
-            className="text-xs text-text-secondary hover:text-text-primary hover:underline"
+            className="text-sm text-primary hover:underline ml-auto"
           >
             Esqueceu a senha?
           </button>
@@ -127,7 +139,7 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
           </p>
         )}
 
-        <Button type="submit" className="h-12 w-full text-base font-semibold" disabled={isLoggingIn}>
+        <Button type="submit" className="h-12 sm:h-14 w-full text-base font-semibold normal-case font-sans tracking-normal" disabled={isLoggingIn}>
           {isLoggingIn ? "Entrando…" : "Entrar"}
         </Button>
       </form>
@@ -141,6 +153,8 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
 
 function SignupForm({ onSuccess }: { onSuccess: () => void }) {
   const { register, isRegistering } = useAuth()
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -166,14 +180,14 @@ function SignupForm({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4" noValidate>
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input autoComplete="name" placeholder="Nome de usuário" className="h-12 bg-transparent" {...field} />
+                <Input autoComplete="name" placeholder="Nome de usuário" className="h-12 sm:h-14 bg-transparent border-border-soft px-4" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -189,7 +203,7 @@ function SignupForm({ onSuccess }: { onSuccess: () => void }) {
                   type="email"
                   autoComplete="email"
                   placeholder="Digite seu e-mail"
-                  className="h-12 bg-transparent"
+                  className="h-12 sm:h-14 bg-transparent border-border-soft px-4"
                   {...field}
                 />
               </FormControl>
@@ -203,13 +217,23 @@ function SignupForm({ onSuccess }: { onSuccess: () => void }) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder="Senha"
-                  className="h-12 bg-transparent"
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    placeholder="Senha"
+                    className="h-12 sm:h-14 bg-transparent border-border-soft px-4 pr-12"
+                    {...field}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary focus:outline-none"
+                    aria-label={showPassword ? "Ocultar senha" : "Exibir senha"}
+                  >
+                    {showPassword ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
+                  </button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -221,13 +245,23 @@ function SignupForm({ onSuccess }: { onSuccess: () => void }) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder="Confirmar senha"
-                  className="h-12 bg-transparent"
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    type={showConfirmPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    placeholder="Confirmar senha"
+                    className="h-12 sm:h-14 bg-transparent border-border-soft px-4 pr-12"
+                    {...field}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary focus:outline-none"
+                    aria-label={showConfirmPassword ? "Ocultar senha" : "Exibir senha"}
+                  >
+                    {showConfirmPassword ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
+                  </button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -240,7 +274,7 @@ function SignupForm({ onSuccess }: { onSuccess: () => void }) {
           </p>
         )}
 
-        <Button type="submit" className="mt-2 h-12 w-full text-base font-semibold" disabled={isRegistering}>
+        <Button type="submit" className="mt-1 sm:mt-2 h-12 sm:h-14 w-full text-base font-semibold normal-case font-sans tracking-normal" disabled={isRegistering}>
           {isRegistering ? "Criando conta…" : "Criar conta"}
         </Button>
       </form>
@@ -255,18 +289,18 @@ function SignupForm({ onSuccess }: { onSuccess: () => void }) {
 function SocialAuth() {
   return (
     <>
-      <div className="relative my-6">
+      <div className="relative my-4 sm:my-6">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t border-border-soft/60" />
         </div>
         <div className="relative flex justify-center text-xs">
-          <span className="bg-[#1A110D] px-2 text-text-secondary">Ou continue com</span>
+          <span className="bg-[#140b07] sm:bg-[#1A110D] px-2 text-text-secondary">Ou continue com</span>
         </div>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         <Button
           variant="outline"
-          className="h-12 w-full bg-transparent text-sm font-medium"
+          className="h-12 sm:h-14 w-full bg-transparent text-sm font-medium"
           onClick={() =>
             toast("Fora do escopo desta entrega", {
               description: "Autenticação social não faz parte do desafio.",
@@ -278,7 +312,7 @@ function SocialAuth() {
         </Button>
         <Button
           variant="outline"
-          className="h-12 w-full bg-transparent text-sm font-medium"
+          className="h-12 sm:h-14 w-full bg-transparent text-sm font-medium"
           onClick={() =>
             toast("Fora do escopo desta entrega", {
               description: "Autenticação social não faz parte do desafio.",
@@ -307,62 +341,51 @@ interface AuthModalProps {
 
 export function AuthModal({ open, defaultTab = "login", onClose }: AuthModalProps) {
   const [activeTab, setActiveTab] = useState<AuthTab>(defaultTab)
-  const navigate = useNavigate()
-  const router = useRouter()
 
   function handleClose() {
     onClose()
-    // Navigate back or to home
-    if (router.history.length > 1) {
-      router.history.back()
-    } else {
-      navigate({ to: "/" })
-    }
   }
 
   function handleSuccess() {
     onClose()
-    navigate({ to: "/" })
   }
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && handleClose()}>
       <DialogContent
-        className="max-h-[90vh] w-full max-w-[440px] overflow-y-auto rounded-2xl border border-border-soft/60 bg-[#1A110D] p-8 shadow-2xl"
+        className="flex flex-col justify-center !w-full !max-w-full !h-[100dvh] !rounded-none !border-0 bg-[#140b07] p-6 sm:justify-start sm:!h-auto sm:!max-w-[500px] sm:!border-x-0 sm:!border-t-0 sm:!border-b-8 sm:!border-primary sm:bg-surface-card sm:p-8 overflow-y-auto sm:shadow-2xl"
         aria-describedby={undefined}
+        onOpenAutoFocus={(e) => e.preventDefault()}
       >
-        <DialogTitle className="sr-only">
-          {activeTab === "login" ? "Entrar na Kurio" : "Criar conta na Kurio"}
+        <div className="flex justify-center pt-0 pb-4 sm:hidden">
+          <span className="font-heading text-2xl font-bold tracking-[0.2em] text-text-primary">KURIO</span>
+        </div>
+
+        <DialogTitle className="text-center font-heading text-xl sm:text-[22px] font-bold sm:sr-only mb-4 sm:mb-6">
+          {activeTab === "login" ? "Entrar" : "Criar perfil de colecionador"}
         </DialogTitle>
 
-        {/* Tab switcher */}
-        <div className="mb-6 flex gap-6 border-b border-border-soft/40 pb-4 font-heading text-xl font-semibold text-text-secondary">
+        {/* Tab switcher - Desktop only */}
+        <div className="mb-6 hidden sm:flex items-center justify-center gap-3 font-heading text-[22px] font-bold">
           <button
             type="button"
             onClick={() => setActiveTab("login")}
-            className={
-              activeTab === "login"
-                ? "relative text-primary after:absolute after:bottom-[-17px] after:left-0 after:h-0.5 after:w-full after:bg-primary"
-                : "transition-colors hover:text-text-primary"
-            }
+            className={activeTab === "login" ? "text-primary" : "text-text-secondary hover:text-text-primary transition-colors"}
           >
             Entrar
           </button>
+          <span className="h-5 w-[1px] bg-border-soft/60" />
           <button
             type="button"
             onClick={() => setActiveTab("signup")}
-            className={
-              activeTab === "signup"
-                ? "relative text-primary after:absolute after:bottom-[-17px] after:left-0 after:h-0.5 after:w-full after:bg-primary"
-                : "transition-colors hover:text-text-primary"
-            }
+            className={activeTab === "signup" ? "text-primary" : "text-text-secondary hover:text-text-primary transition-colors"}
           >
             Criar conta
           </button>
         </div>
 
-        {/* Subtitle */}
-        <p className="mb-6 mt-1 text-sm leading-relaxed text-text-secondary">
+        {/* Subtitle - Desktop only */}
+        <p className="mb-6 mt-1 hidden sm:block text-center text-sm leading-relaxed text-text-secondary">
           {activeTab === "login"
             ? "Acesse seu perfil de colecionador, acompanhe suas coleções favoritas e conecte sua carteira."
             : "Crie seu perfil de colecionador e conecte uma carteira quando quiser."}
@@ -377,8 +400,21 @@ export function AuthModal({ open, defaultTab = "login", onClose }: AuthModalProp
 
         <SocialAuth />
 
+        {/* Mobile Toggle */}
+        <div className="mt-6 sm:mt-8 text-center sm:hidden">
+          {activeTab === "login" ? (
+            <button type="button" onClick={() => setActiveTab("signup")} className="text-sm text-text-secondary hover:text-text-primary">
+              Novo na Kurio? <span className="text-primary">Crie uma conta</span>
+            </button>
+          ) : (
+            <button type="button" onClick={() => setActiveTab("login")} className="text-sm text-text-secondary hover:text-text-primary">
+              Já tem uma conta? <span className="text-primary">Entre</span>
+            </button>
+          )}
+        </div>
+
         {/* Test credentials hint */}
-        <div className="mt-4 rounded-lg border border-border-soft/40 bg-surface-card/30 p-3 text-xs text-text-secondary">
+        <div className="mt-4 text-center text-xs text-text-secondary/50">
           Credenciais de teste: <strong>collector@kurio.app</strong> / <strong>artlover@kurio.app</strong>
           <br />
           Senha: <strong>kurio123</strong>

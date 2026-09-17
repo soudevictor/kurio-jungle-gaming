@@ -43,7 +43,7 @@ function outOfScopeToast() {
 }
 
 export function Header() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, openAuthModal } = useAuth();
   const { itemCount } = useCart();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -220,13 +220,12 @@ export function Header() {
           ) : (
             <div className="hidden items-center gap-2 lg:flex">
               <Button
-                asChild
+                type="button"
+                onClick={() => openAuthModal("login")}
                 className="gap-2.5 bg-primary font-heading text-sm font-medium text-ink hover:bg-primary/80"
               >
-                <Link to="/login" className="!capitalize">
-                  <LogOut className="size-4" />
-                  Entrar
-                </Link>
+                <LogOut className="size-4" />
+                Entrar
               </Button>
             </div>
           )}
@@ -327,13 +326,14 @@ export function Header() {
               </span>
             )}
           </Link>
-          <Link
-            to={isAuthenticated ? "/profile" : "/login"}
+          <button
+            type="button"
+            onClick={() => isAuthenticated ? navigate({ to: "/profile" }) : openAuthModal("login")}
             className="flex size-11 items-center justify-center text-[#d9b17f]"
             aria-label="Perfil"
           >
             <User className="size-5 fill-current" />
-          </Link>
+          </button>
         </div>
       </nav>
       )}
