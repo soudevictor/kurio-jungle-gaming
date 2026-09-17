@@ -42,7 +42,7 @@ function OrderConfirmationPage() {
           <div className="text-center">
             <Clock className="mx-auto size-10 animate-pulse text-primary" aria-hidden />
             <h1 className="mt-4 font-heading text-2xl font-bold">Confirmando seu pedido…</h1>
-            <p className="mt-1 text-sm text-text-secondary">
+            <p className="mt-1 text-sm text-muted-foreground">
               Estamos aguardando a confirmação da transação simulada. Isso leva alguns segundos.
             </p>
           </div>
@@ -51,7 +51,7 @@ function OrderConfirmationPage() {
           <div className="text-center">
             <XCircle className="mx-auto size-10 text-error" aria-hidden />
             <h1 className="mt-4 font-heading text-2xl font-bold">Pagamento recusado</h1>
-            <p className="mt-1 text-sm text-text-secondary">
+            <p className="mt-1 text-sm text-muted-foreground">
               Não foi possível confirmar a transação simulada. Nenhum valor foi cobrado.
             </p>
             <div className="mt-6 flex justify-center gap-2">

@@ -112,14 +112,14 @@ function CheckoutPage() {
           Mercado
         </Link>
         <span>/</span>
-        <span className="text-text-primary">Pagamento</span>
+        <span className="text-foreground">Pagamento</span>
       </div>
 
       <div className="mt-0 md:mt-6 grid gap-12 lg:grid-cols-2 lg:gap-24">
         {/* Left Side: Forms */}
         <div className="hidden md:block space-y-8">
           <div>
-            <h2 className="mb-6 font-heading text-lg font-bold text-text-primary">
+            <h2 className="mb-6 font-heading text-lg font-bold text-foreground">
               Perfil do colecionador
             </h2>
             <div className="grid gap-6 sm:grid-cols-2">
@@ -294,10 +294,10 @@ function CheckoutPage() {
                         className="size-16 rounded object-cover"
                       />
                       <div className="flex flex-col">
-                        <span className="font-heading text-sm font-bold text-text-primary">
+                        <span className="font-heading text-sm font-bold text-foreground">
                           {item.nft.title}
                         </span>
-                        <span className="text-xs text-text-secondary">
+                        <span className="text-xs text-muted-foreground">
                           ID do token: #{item.nftId.split("-")[1] || "000"}
                         </span>
                       </div>

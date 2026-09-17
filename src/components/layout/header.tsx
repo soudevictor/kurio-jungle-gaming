@@ -1,29 +1,19 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from "@tanstack/react-router"
+import { Heart, Home, ScanLine, Search, ShoppingCart, SlidersHorizontal, User, LogOut } from "lucide-react"
+import { useState } from "react"
+import { toast } from "sonner"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { useAuth } from "@/features/auth/auth-context";
-import { useCart } from "@/features/cart/use-cart";
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { cn } from "@/lib/utils";
-import {
-  Heart,
-  Home,
-  LogOut,
-  ScanLine,
-  Search,
-  ShoppingCart,
-  SlidersHorizontal,
-  User,
-} from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { useAuth } from "@/features/auth/auth-context"
+import { useCart } from "@/features/cart/use-cart"
 
 // Only "Início" maps to a real route in this challenge's scope (README §3:
 // "Páginas editoriais... não fazem parte da entrega"). The others are kept
@@ -34,12 +24,12 @@ const NAV_ITEMS = [
   { label: "Mercado", to: null },
   { label: "Criadores", to: null },
   { label: "Aprenda", to: null },
-];
+]
 
 function outOfScopeToast() {
   toast("Fora do escopo desta entrega", {
     description: "Esta seção é apenas editorial e não faz parte do desafio.",
-  });
+  })
 }
 
 export function Header() {
@@ -52,59 +42,45 @@ export function Header() {
   const pathname = routerState.location.pathname;
 
   function handleSearchSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    navigate({
-      to: "/",
-      search: (prev) => ({
-        ...prev,
-        search: searchQuery || undefined,
-        page: 1,
-      }),
-    });
-    setDesktopSearchOpen(false);
+    e.preventDefault()
+    navigate({ to: "/", search: (prev) => ({ ...prev, search: searchQuery || undefined, page: 1 }) })
+    setDesktopSearchOpen(false)
   }
 
   return (
-    <header className="z-40 bg-ink lg:sticky lg:top-0 lg:bg-ink/95 lg:backdrop-blur">
+    <header className="z-40 bg-background lg:sticky lg:top-0 lg:border-b lg:border-border/40 lg:bg-background/95 lg:backdrop-blur">
       {/* ── Mobile search bar (top row) — matches Figma "Search Bar" layer ── */}
-      {pathname === "/" && (
-        <div className="px-6 pb-3 pt-10 lg:hidden">
-          <form onSubmit={handleSearchSubmit} className="flex gap-2">
-            <label htmlFor="mobile-search" className="sr-only">
-              Buscar NFTs
-            </label>
-            <div className="bg-surface-card rounded-[10px] relative flex-1">
-              <Search
-                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
-                aria-hidden
-              />
-              <Input
-                id="mobile-search"
-                type="search"
-                placeholder="Explorar coleções"
-                className="h-11 rounded-xl border-0 bg-surface-card pl-10 text-sm font-medium placeholder:text-text-secondary"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <Button
-              type="button"
-              size="icon"
-              className="size-11 shrink-0 rounded-xl bg-primary text-ink hover:bg-primary/90"
-              aria-label="Abrir filtros"
-            >
-              <SlidersHorizontal className="size-5" />
-            </Button>
-          </form>
-        </div>
-      )}
+      <div className="px-6 pb-3 pt-10 lg:hidden">
+        <form onSubmit={handleSearchSubmit} className="flex gap-2">
+          <label htmlFor="mobile-search" className="sr-only">
+            Buscar NFTs
+          </label>
+          <div className="relative flex-1">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden
+            />
+            <Input
+              id="mobile-search"
+              type="search"
+              placeholder="Buscar NFTs, coleções ou criadores"
+              className="h-11 rounded-xl border-0 bg-card pl-10 text-sm font-medium placeholder:text-muted-foreground"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <Button type="button" size="icon" className="size-11 shrink-0 rounded-xl" aria-label="Abrir filtros">
+            <SlidersHorizontal className="size-5" />
+          </Button>
+        </form>
+      </div>
 
       {/* ── Main header row ─────────────────────────────────────────────────── */}
-      <div className="container-kurio hidden h-14 items-center gap-6 lg:flex border-b border-primary/20">
+      <div className="container-kurio hidden h-14 items-center gap-6 lg:flex">
         {/* Logo */}
         <Link
           to="/"
-          className="shrink-0 font-heading text-sm font-bold uppercase tracking-[0.2em] text-text-primary"
+          className="shrink-0 font-heading text-lg font-bold uppercase tracking-[0.2em] text-foreground"
           aria-label="Kurio — página inicial"
         >
           KURIO
@@ -124,12 +100,11 @@ export function Header() {
               <Link
                 key={item.label}
                 to={item.to}
-                className={cn(
-                  "relative pb-4 pt-4 transition-colors hover:text-primary",
-                  isActive
-                    ? "text-primary font-semibold border-b-3 border-primary"
-                    : "text-foreground",
-                )}
+                className="relative py-1 text-foreground/80 transition-colors hover:text-foreground"
+                activeProps={{
+                  className:
+                    "relative py-1 text-foreground font-semibold after:absolute after:bottom-[-20px] after:left-0 after:w-full after:h-[2px] after:bg-primary",
+                }}
                 activeOptions={{ exact: true }}
               >
                 {item.label}
@@ -138,18 +113,13 @@ export function Header() {
               <button
                 key={item.label}
                 type="button"
-                className={cn(
-                  "relative pb-4 pt-4 transition-colors hover:text-primary",
-                  isActive
-                    ? "text-primary font-semibold border-b-3 border-primary"
-                    : "text-foreground",
-                )}
+                className="py-1 text-muted-foreground transition-colors hover:text-foreground"
                 onClick={outOfScopeToast}
               >
                 {item.label}
               </button>
-            );
-          })}
+            ),
+          )}
         </nav>
 
         {/* Right actions */}
@@ -175,7 +145,7 @@ export function Header() {
             <Link to="/cart" className="relative">
               <ShoppingCart className="size-5" />
               {itemCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-ink">
+                <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {itemCount > 9 ? "9+" : itemCount}
                 </span>
               )}
@@ -186,20 +156,12 @@ export function Header() {
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="gap-2 pl-1.5 pr-2"
-                  aria-label="Menu da conta"
-                >
+                <Button variant="ghost" className="gap-2 pl-1.5 pr-2" aria-label="Menu da conta">
                   <Avatar className="size-6">
                     <AvatarImage src={user?.avatarUrl ?? undefined} alt="" />
-                    <AvatarFallback>
-                      {user?.name?.[0]?.toUpperCase()}
-                    </AvatarFallback>
+                    <AvatarFallback>{user?.name?.[0]?.toUpperCase()}</AvatarFallback>
                   </Avatar>
-                  <span className="hidden text-sm font-medium sm:inline">
-                    {user?.name.split(" ")[0]}
-                  </span>
+                  <span className="hidden text-sm font-medium sm:inline">{user?.name.split(" ")[0]}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -212,9 +174,7 @@ export function Header() {
                   <Link to="/profile/wallets">Carteiras</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => logout()}>
-                  Sair
-                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => logout()}>Sair</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
@@ -229,19 +189,20 @@ export function Header() {
               </Button>
             </div>
           )}
+
         </div>
       </div>
 
       {/* Desktop expandable search bar */}
       {desktopSearchOpen && (
-        <div className="hidden border-t border-border-soft/40 px-4 py-3 lg:block">
+        <div className="hidden border-t border-border/40 px-4 py-3 lg:block">
           <form onSubmit={handleSearchSubmit} className="mx-auto max-w-2xl">
             <label htmlFor="desktop-search" className="sr-only">
               Buscar NFTs
             </label>
             <div className="relative">
               <Search
-                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
+                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
                 aria-hidden
               />
               <Input
@@ -336,7 +297,6 @@ export function Header() {
           </button>
         </div>
       </nav>
-      )}
     </header>
-  );
+  )
 }

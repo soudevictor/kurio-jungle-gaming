@@ -28,7 +28,7 @@ export function Pagination({
       {pages.map((p, i) =>
         p === "…" ? (
           // eslint-disable-next-line react/no-array-index-key
-          <span key={`ellipsis-${i}`} className="px-2 text-sm text-text-secondary" aria-hidden>
+          <span key={`ellipsis-${i}`} className="px-2 text-sm text-muted-foreground" aria-hidden>
             …
           </span>
         ) : (

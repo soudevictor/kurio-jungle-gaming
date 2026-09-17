@@ -134,7 +134,7 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
         </div>
 
         {form.formState.errors.root && (
-          <p role="alert" className="text-sm text-error">
+          <p role="alert" className="text-sm text-destructive">
             {form.formState.errors.root.message}
           </p>
         )}
@@ -269,7 +269,7 @@ function SignupForm({ onSuccess }: { onSuccess: () => void }) {
         />
 
         {form.formState.errors.root && (
-          <p role="alert" className="text-sm text-error">
+          <p role="alert" className="text-sm text-destructive">
             {form.formState.errors.root.message}
           </p>
         )}
@@ -291,7 +291,7 @@ function SocialAuth() {
     <>
       <div className="relative my-4 sm:my-6">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-border-soft/60" />
+          <span className="w-full border-t border-border/60" />
         </div>
         <div className="relative flex justify-center text-xs">
           <span className="bg-[#140b07] sm:bg-[#1A110D] px-2 text-text-secondary">Ou continue com</span>

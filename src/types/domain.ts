@@ -64,7 +64,6 @@ export interface NftListParams {
   sort?: "relevance" | "price-asc" | "price-desc" | "recent" | "trending"
   minPrice?: string
   maxPrice?: string
-  networks?: string[]
   page?: number
   pageSize?: number
 }

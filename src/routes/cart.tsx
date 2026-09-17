@@ -300,7 +300,7 @@ function CartPage() {
                     <div className="hidden md:flex justify-end pr-2">
                       <button
                         type="button"
-                        className="text-text-secondary transition-colors hover:text-error disabled:opacity-50"
+                        className="text-muted-foreground transition-colors hover:text-destructive disabled:opacity-50"
                         onClick={() => removeItem.mutate(item.nftId)}
                         disabled={removeItem.isPending}
                         aria-label="Remover item"
