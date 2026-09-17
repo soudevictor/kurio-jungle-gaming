@@ -25,6 +25,8 @@ function RootLayout() {
 
   const isLoginRoute = pathname === "/login"
   const isSignupRoute = pathname === "/signup"
+  const isCheckoutRoute = pathname === "/checkout"
+  const isOrderRoute = pathname.startsWith("/orders")
   const isAuthModal = isLoginRoute || isSignupRoute
 
   function handleModalClose() {
@@ -44,7 +46,11 @@ function RootLayout() {
       <main id="main-content" className="flex-1">
         <Outlet />
       </main>
-      <Footer />
+      {!isOrderRoute && (
+        <div className={isCheckoutRoute ? "hidden md:block" : ""}>
+          <Footer />
+        </div>
+      )}
       {mocksEnabled && <MockControlPanel />}
 
       {/* Auth modals — rendered as overlays instead of navigating to separate pages */}
